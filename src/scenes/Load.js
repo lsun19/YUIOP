@@ -13,18 +13,19 @@ class Load extends Phaser.Scene
         this.load.on('progress', (value) => {
             loadingBar.clear();                                 // reset fill/line style
             loadingBar.fillStyle(0xFFFFFF, 1);                  // (color, alpha)
-            loadingBar.fillRect(0, centerY, w * value, 5);  // (x, y, w, h)
+            loadingBar.fillRect(0, centerY, wdth * value, 5);  // (x, y, w, h)
         });
         this.load.on('complete', () => {
             loadingBar.destroy();
         });
 
         this.load.path = './assets/';
+
         // load graphics assets
-        this.load.image('', 'image/');
+        this.load.atlas('yoko_atlas', 'atlas/yokoSpriteSheet.png', 'atlas/yokoSpriteSheet.json');
 
         // load audio assets
-        this.load.audio('', ['audio/']);
+        // this.load.audio('', ['audio/']);
 
     }
 
@@ -38,6 +39,6 @@ class Load extends Phaser.Scene
         }
 
         // go to Title scene
-        this.scene.start('titleScene');
+        this.scene.start('menuScene');
     }
 }
