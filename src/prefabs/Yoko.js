@@ -14,7 +14,8 @@ class Yoko extends Phaser.Physics.Arcade.Sprite
         this.body.setCollideWorldBounds(true);
 
         this.yokoVelocity = 500;    // in pixels
-        this.shieldCooldown = 300;               
+        this.shieldCooldown = 300;   
+        this.beamCooldown = 300;         
         // this.tint = Math.random() * 0xFFFFFF;   // randomize tint
 
         // this.sfxNoteY1 = scene.sound.add('sfx_C1');
@@ -93,6 +94,13 @@ class IdleState extends State
             return;
         }
 
+        // transition to charge if pressing I
+        if(Phaser.Input.Keyboard.JustDown(keyI)) 
+        {
+            this.stateMachine.transition('charge');
+            return;
+        }
+
         // transition to move if pressing a movement key
         if( keyW.isDown || keyA.isDown || keyS.isDown || keyD.isDown ) 
         {
@@ -114,6 +122,13 @@ class MoveState extends State
         if(Phaser.Input.Keyboard.JustDown(keyP)) 
         {
             this.stateMachine.transition('guard');
+            return;
+        }
+
+        // transition to charge if pressing I
+        if(Phaser.Input.Keyboard.JustDown(keyI)) 
+        {
+            this.stateMachine.transition('charge');
             return;
         }
 
@@ -155,11 +170,24 @@ class GuardState extends State
     enter(scene, yoko) 
     {
         yoko.setVelocity(0);
-        yoko.setTint(0x00AA00);     // turn green
+        yoko.anims.play('guarding');
 
         // set a short cooldown delay before going back to idle
         scene.time.delayedCall(yoko.shieldCooldown, () => {
-            yoko.clearTint();
+            this.stateMachine.transition('idle');
+        });
+    }
+}
+
+class ChargeState extends State 
+{
+    enter(scene, yoko) 
+    {
+        yoko.setVelocity(0);
+        yoko.anims.play('charging');
+
+        // set a short cooldown delay before going back to idle
+        scene.time.delayedCall(yoko.beamCooldown, () => {
             this.stateMachine.transition('idle');
         });
     }

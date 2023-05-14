@@ -27,9 +27,13 @@ class Play extends Phaser.Scene
             idle: new IdleState(),
             move: new MoveState(),
             guard: new GuardState(),
+            charge: new ChargeState(),
         }, [this, this.yoko]);
 
-        this.anims.create({ 
+        this.yoko.setDepth(1);  
+
+        this.anims.create
+        ({ 
             key: 'idling', 
             frames: this.anims.generateFrameNames('yoko_atlas', {      
                 prefix: 'yokoIdle',
@@ -42,7 +46,8 @@ class Play extends Phaser.Scene
             repeat: -1 
         });
 
-        this.anims.create({ 
+        this.anims.create
+        ({ 
             key: 'flying', 
             frames: this.anims.generateFrameNames('yoko_atlas', {      
                 prefix: 'yokofly',
@@ -55,12 +60,45 @@ class Play extends Phaser.Scene
             repeat: -1 
         });
 
+        this.anims.create
+        ({ 
+            key: 'guarding', 
+            frames: this.anims.generateFrameNames('yoko_atlas', {      
+                prefix: 'yokoguard',
+                start: 1,
+                end: 4,
+                suffix: '',
+                zeroPad: 1
+            }), 
+            frameRate: 10,
+            repeat: 0 
+        });
+
+        this.anims.create
+        ({ 
+            key: 'charging', 
+            frames: this.anims.generateFrameNames('yoko_atlas', {      
+                prefix: 'yokoCharge',
+                start: 1,
+                end: 3,
+                suffix: '',
+                zeroPad: 1
+            }), 
+            frameRate: 10,
+            repeat: 0 
+        });
+
+        // place tile sprite
+        this.starfield = this.add.tileSprite(0, 0, 1800, 720, 'background').setOrigin(0, 0);
+
     }
 
 
     update()
     {   
         this.yokoFSM.step();
+
+        this.starfield.tilePositionX += 0.5;  // update tile sprite
     }
 
 }
