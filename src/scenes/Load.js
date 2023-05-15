@@ -56,6 +56,10 @@ class Load extends Phaser.Scene
             console.log('Local storage not supported');
         }
 
+        // update instruction text
+        document.getElementById('info').innerHTML = '<strong>YUI op.:</strong> WASD: move | Y:  first attack | O: second attack | U: deploy mine | I: charge | P: guard';
+
+
         // go to Title scene
         this.scene.start('menuScene');
     }

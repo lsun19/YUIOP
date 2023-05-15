@@ -13,6 +13,9 @@ class Play extends Phaser.Scene
         this.enemyASpeedMax = -1000;
         this.enemyBSpeed    = -500;
 
+
+        enemyAcd = 2000;
+        enemyBcd = 2000;
         level = 0;
 
         // setup keyboard input
