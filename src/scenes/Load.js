@@ -23,7 +23,11 @@ class Load extends Phaser.Scene
 
         // load graphics assets
         this.load.atlas('yoko_atlas', 'atlas/yokoSpriteSheet.png', 'atlas/yokoSpriteSheet.json');
+        this.load.atlas('enemy_atlas', 'atlas/EnemySpritesheet.png', 'atlas/EnemySpritesheet.json');
         this.load.image('background', 'image/background.png');
+        this.load.image('yokobulletY', 'image/Ybullet.png');
+        this.load.image('yokobulletU', 'image/Ubullet.png');
+        this.load.image('yokobulletO', 'image/Obullet.png');
 
         // load audio assets
         // this.load.audio('', ['audio/']);

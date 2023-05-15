@@ -11,7 +11,7 @@ class Yoko extends Phaser.Physics.Arcade.Sprite
         this.parentScene.add.existing(this);            // add to existing scene, displayList, updateList
         this.parentScene.physics.add.existing(this);    // add to physics system
 
-        this.body.setCollideWorldBounds(true);
+        this.body.setCollideWorldBounds(true); 
 
         this.yokoVelocity = 500;    // in pixels
         this.shieldCooldown = 300;   
@@ -187,7 +187,8 @@ class ChargeState extends State
         yoko.anims.play('charging');
 
         // set a short cooldown delay before going back to idle
-        scene.time.delayedCall(yoko.beamCooldown, () => {
+        scene.time.delayedCall(yoko.beamCooldown, () => 
+        {
             this.stateMachine.transition('idle');
         });
     }

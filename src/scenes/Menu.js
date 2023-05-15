@@ -44,21 +44,21 @@ class Menu extends Phaser.Scene
         // check for F input
         if (Phaser.Input.Keyboard.JustDown(keyF)) 
         {
-            let textureManager = this.textures;
-            // take snapshot of the entire game viewport
-            // https://newdocs.phaser.io/docs/3.55.2/Phaser.Renderer.WebGL.WebGLRenderer#snapshot
-            // .snapshot(callback, type, encoderOptions)
-            // the image is automatically passed to the callback
-            this.game.renderer.snapshot((snapshotImage) => 
-            {
-                // make sure an existing texture w/ that key doesn't already exist
-                if(textureManager.exists('titlesnapshot')) 
-                {
-                    textureManager.remove('titlesnapshot');
-                }
-                // take the snapshot img returned from callback and add to texture manager
-                textureManager.addImage('titlesnapshot', snapshotImage);
-            });
+            // let textureManager = this.textures;
+            // // take snapshot of the entire game viewport
+            // // https://newdocs.phaser.io/docs/3.55.2/Phaser.Renderer.WebGL.WebGLRenderer#snapshot
+            // // .snapshot(callback, type, encoderOptions)
+            // // the image is automatically passed to the callback
+            // this.game.renderer.snapshot((snapshotImage) => 
+            // {
+            //     // make sure an existing texture w/ that key doesn't already exist
+            //     if(textureManager.exists('titlesnapshot')) 
+            //     {
+            //         textureManager.remove('titlesnapshot');
+            //     }
+            //     // take the snapshot img returned from callback and add to texture manager
+            //     textureManager.addImage('titlesnapshot', snapshotImage);
+            // });
             
             // start next scene
             this.scene.start('playScene');
