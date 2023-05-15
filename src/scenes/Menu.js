@@ -15,6 +15,16 @@ class Menu extends Phaser.Scene
         this.add.bitmapText(centerX, centerY + textSpacer*2, 'SLN', 'Press F to Start', 36).setOrigin(0.5);
         this.add.bitmapText(centerX, hght - textSpacer*2, 'SLN', 'LIYU SUN', 16).setOrigin(0.5);
 
+        // set up audio, play bgm
+        this.bgm = this.sound.add('backgroundMusic', 
+        { 
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            loop: true 
+        });
+        this.bgm.play();
+
         // title text tweens
         let yoyoTweenA = this.tweens.add
         ({

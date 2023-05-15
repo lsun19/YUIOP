@@ -30,7 +30,17 @@ class Load extends Phaser.Scene
         this.load.image('yokobulletO', 'image/Obullet.png');
 
         // load audio assets
-        // this.load.audio('', ['audio/']);
+        this.load.audio('sfx_C1', 'sfx/sfx_C1.mp3');
+        this.load.audio('sfx_D1', 'sfx/sfx_D1.mp3');
+        this.load.audio('sfx_E1', 'sfx/sfx_E1.mp3');
+        this.load.audio('sfx_G1', 'sfx/sfx_G1.mp3');
+        this.load.audio('sfx_A1', 'sfx/sfx_A1.mp3');
+        this.load.audio('sfx_C2', 'sfx/sfx_C2.mp3');
+        this.load.audio('sfx_D2', 'sfx/sfx_D2.mp3');
+        this.load.audio('sfx_E2', 'sfx/sfx_E2.mp3');
+        this.load.audio('sfx_G2', 'sfx/sfx_G2.mp3');
+        this.load.audio('sfx_A2', 'sfx/sfx_A2.mp3');
+        this.load.audio('backgroundMusic', 'sfx/bgm.mp3');
 
         // load font
         this.load.bitmapFont('SLN', 'font/PressStart2P.png', 'font/PressStart2P.xml');

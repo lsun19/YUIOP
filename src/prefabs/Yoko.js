@@ -14,39 +14,7 @@ class Yoko extends Phaser.Physics.Arcade.Sprite
         this.body.setCollideWorldBounds(true); 
 
         this.yokoVelocity   = 500;    // in pixels
-        this.shieldCooldown = 300;   
-        this.beamCooldown   = 300;
 
-        // this.sfxNoteY1 = scene.sound.add('sfx_C1');
-        // this.sfxNoteY1.volume = 0.1;
-        // this.sfxNoteU1 = scene.sound.add('sfx_D1');
-        // this.sfxNoteU1.volume = 0.1;
-        // this.sfxNoteI1 = scene.sound.add('sfx_E1');
-        // this.sfxNoteI1.volume = 0.1;
-        // this.sfxNoteO1 = scene.sound.add('sfx_G1');
-        // this.sfxNoteO1.volume = 0.1;
-        // this.sfxNoteP1 = scene.sound.add('sfx_A1');
-        // this.sfxNoteP1.volume = 0.1;
-        // this.sfxNoteY2 = scene.sound.add('sfx_C2');
-        // this.sfxNoteY2.volume = 0.1;
-        // this.sfxNoteU2 = scene.sound.add('sfx_D2');
-        // this.sfxNoteU2.volume = 0.1;
-        // this.sfxNoteI2 = scene.sound.add('sfx_E2');
-        // this.sfxNoteI2.volume = 0.1;
-        // this.sfxNoteO2 = scene.sound.add('sfx_G2');
-        // this.sfxNoteO2.volume = 0.1;
-        // this.sfxNoteP2 = scene.sound.add('sfx_A2');
-        // this.sfxNoteP2.volume = 0.1;
-        // this.sfxNoteY3 = scene.sound.add('sfx_C3');
-        // this.sfxNoteY3.volume = 0.1;
-        // this.sfxNoteU3 = scene.sound.add('sfx_D3');
-        // this.sfxNoteU3.volume = 0.1;
-        // this.sfxNoteI3 = scene.sound.add('sfx_E3');
-        // this.sfxNoteI3.volume = 0.1;
-        // this.sfxNoteO3 = scene.sound.add('sfx_G3');
-        // this.sfxNoteO3.volume = 0.1;
-        // this.sfxNoteP3 = scene.sound.add('sfx_A3');
-        // this.sfxNoteP3.volume = 0.1;
     }
 }
 
@@ -145,7 +113,7 @@ class GuardState extends State
         guardpos = true;
 
         // set a short cooldown delay before going back to idle
-        scene.time.delayedCall(yoko.shieldCooldown, () => {
+        scene.time.delayedCall(Pcd, () => {
             guardpos = false;
             this.stateMachine.transition('idle');
         });
@@ -160,7 +128,7 @@ class ChargeState extends State
         yoko.anims.play('charging');
 
         // set a short cooldown delay before going back to idle
-        scene.time.delayedCall(yoko.beamCooldown, () => 
+        scene.time.delayedCall(Icd, () => 
         {
             this.stateMachine.transition('idle');
         });

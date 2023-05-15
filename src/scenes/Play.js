@@ -7,12 +7,13 @@ class Play extends Phaser.Scene
 
     create()
     {
+
         // reset parameters
-        this.enemyASpeed = -450;
+        this.enemyASpeed    = -500;
         this.enemyASpeedMax = -1000;
+        this.enemyBSpeed    = -500;
+
         level = 0;
-        this.extremeMODE = false;
-        this.shadowLock = false;
 
         // setup keyboard input
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -24,6 +25,7 @@ class Play extends Phaser.Scene
         keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
         keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+
 
         // add new Yoko to scene (scene, x, y, texture, frame, direction)
         this.yoko = new Yoko(this, paddingSize, centerY, 'yoko_atlas', 'yokoIdle1');
@@ -214,6 +216,19 @@ class Play extends Phaser.Scene
                     yoko.setAlpha(1);
                 });
                 yokoHP--;
+                
+                if(yokoHP <= 0)
+                {
+                    this.cameras.main.shake(100, 0.01);
+                    this.cameras.main.fade(4000, 255, 255, 255);
+
+                    // switch states after timer expires
+                    this.time.delayedCall(4000, () => 
+                    { 
+                        this.cameras.main.clearFX();
+                        this.scene.start('ggScene'); 
+                    });
+                }
             }
         });
 
@@ -231,6 +246,19 @@ class Play extends Phaser.Scene
                     yoko.setAlpha(1);
                 });
                 yokoHP--;
+                
+                if(yokoHP <= 0)
+                {
+                    this.cameras.main.shake(100, 0.01);
+                    this.cameras.main.fade(4000, 255, 255, 255);
+
+                    // switch states after timer expires
+                    this.time.delayedCall(4000, () => 
+                    { 
+                        this.cameras.main.clearFX();
+                        this.scene.start('ggScene'); 
+                    });
+                }
             }
         });
 
@@ -248,6 +276,19 @@ class Play extends Phaser.Scene
                     yoko.setAlpha(1);
                 });
                 yokoHP--;
+                
+                if(yokoHP <= 0)
+                {
+                    this.cameras.main.shake(100, 0.01);
+                    this.cameras.main.fade(4000, 255, 255, 255);
+
+                    // switch states after timer expires
+                    this.time.delayedCall(4000, () => 
+                    { 
+                        this.cameras.main.clearFX();
+                        this.scene.start('ggScene'); 
+                    });
+                }
             }
 
         });
@@ -333,8 +374,18 @@ class Play extends Phaser.Scene
         });
         /******************************  set up collision event between enemyBullet and three types of bullets ******************************/
 
+        // set up difficulty timer (triggers callback every second)
+        this.difficultyTimer = this.time.addEvent
+        ({
+            delay: 1000,
+            callback: this.levelBump,
+            callbackScope: this,
+            loop: true
+        });
+
         // place tile sprite
         this.background = this.add.tileSprite(0, 0, 1800, 720, 'background').setOrigin(0, 0);
+
     }
 
     /******************************  create new bullets and add them to existing group ******************************/
@@ -371,7 +422,7 @@ class Play extends Phaser.Scene
     addEnemyB() 
     {
         let speedVariance =  Phaser.Math.Between(0, 50);
-        let enemyB = new EnemyTypeB(this, this.enemyASpeed - speedVariance);
+        let enemyB = new EnemyTypeB(this, this.enemyBSpeed - speedVariance);
         this.enemyBGroup.add(enemyB);
         enemyB.anims.play('TypeBenemy');
     }
@@ -394,7 +445,17 @@ class Play extends Phaser.Scene
         /******************************  monitor key event for 5 different functional keys ******************************/
         if(Phaser.Input.Keyboard.JustDown(keyY) && YcdEnd) 
         {
-            this.addBulletY(); 
+            this.addBulletY();
+
+            if(this.yoko.y >= centerY)
+            {
+                this.sound.play('sfx_C2', { volume: 0.1 });  
+            }
+            else
+            {
+                this.sound.play('sfx_C1', { volume: 0.1 });  
+            }
+            
 
             YcdEnd = false;
 
@@ -408,6 +469,15 @@ class Play extends Phaser.Scene
         {
             this.addBulletU();
 
+            if(this.yoko.y >= centerY)
+            {
+                this.sound.play('sfx_D2', { volume: 0.1 });  
+            }
+            else
+            {
+                this.sound.play('sfx_D1', { volume: 0.1 });  
+            }
+
             UcdEnd = false;
 
             this.Ucooldown = this.time.delayedCall(Ucd, ()=>
@@ -416,9 +486,39 @@ class Play extends Phaser.Scene
             })
         }
 
+        if(Phaser.Input.Keyboard.JustDown(keyI) && IcdEnd) 
+        {
+
+            if(this.yoko.y >= centerY)
+            {
+                this.sound.play('sfx_E2', { volume: 0.1 });  
+            }
+            else
+            {
+                this.sound.play('sfx_E1', { volume: 0.1 });  
+            }
+
+            IcdEnd = false;
+
+            this.Icooldown = this.time.delayedCall(Icd, ()=>
+            {
+                IcdEnd = true;
+            })
+        }
+
         if(Phaser.Input.Keyboard.JustDown(keyO) && OcdEnd) 
         {
             this.addBulletO();
+
+            
+            if(this.yoko.y >= centerY)
+            {
+                this.sound.play('sfx_G2', { volume: 0.1 });  
+            }
+            else
+            {
+                this.sound.play('sfx_G1', { volume: 0.1 });  
+            }
 
             OcdEnd = false;
 
@@ -427,11 +527,69 @@ class Play extends Phaser.Scene
                 OcdEnd = true;
             })
         }
+
+        if(Phaser.Input.Keyboard.JustDown(keyP) && PcdEnd) 
+        {
+
+            if(this.yoko.y >= centerY)
+            {
+                this.sound.play('sfx_A2', { volume: 0.1 });  
+            }
+            else
+            {
+                this.sound.play('sfx_A1', { volume: 0.1 });  
+            }
+
+            PcdEnd = false;
+
+            this.Pcooldown = this.time.delayedCall(Pcd, ()=>
+            {
+                PcdEnd = true;
+            })
+        }
         /******************************  monitor key event for 5 different functional keys ******************************/
 
         // update tile sprite
         this.background.tilePositionX += 0.5;  
 
+    }
+
+    levelBump() 
+    {
+        // increment level (ie, score)
+        level++;
+
+        // // bump speed every 5 levels (until max is hit)
+        // if(level % 5 == 0) 
+        // {
+        //     //console.log(`level: ${level}, speed: ${this.barrierSpeed}`);
+        //     // this.sound.play('clang', { volume: 0.5 });          // play clang to signal speed up
+        //     if(this.enemyASpeed >= this.enemyASpeedMax) 
+        //     {   // increase barrier speed
+        //         this.enemyASpeed -= 20;
+        //         this.bgm.rate += 0.01;                          // increase bgm playback rate
+        //     }
+
+        //     // change game border color
+        //     let rndColor = this.getRandomColor();
+        //     document.getElementsByTagName('canvas')[0].style.borderColor = rndColor;
+
+        //     // cam shake: .shake( [duration] [, intensity] )
+        //     this.cameras.main.shake(100, 0.01);
+        // }
+
+        // set HARD mode
+        if(level == 45) 
+        {
+            enemyAcd = 1500;
+            enemyBcd = 1500;
+        }
+        // set EXTREME mode
+        if(level == 75) 
+        {
+            enemyAcd = 1000;
+            enemyBcd = 1000;
+        }
     }
 
 }
