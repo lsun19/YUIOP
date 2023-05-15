@@ -39,7 +39,7 @@ class EnemyTypeA extends Phaser.Physics.Arcade.Sprite
         if(this.newEnemyA) 
         {
             // (recursively) call parent scene method from this context
-            this.parentScene.time.delayedCall(2000, () => 
+            this.parentScene.time.delayedCall(enemyAcd, () => 
             { 
                 this.parentScene.addEnemyA(this.parent, this.velocity);
             });

@@ -3,10 +3,6 @@ class Play extends Phaser.Scene
     constructor()
     {
         super("playScene");
-
-        this.YokoBulletsY;
-        this.YokoBulletsU;
-        this.YokoBulletsO;
     }
 
     create()
@@ -41,8 +37,10 @@ class Play extends Phaser.Scene
             charge: new ChargeState(),
         }, [this, this.yoko]);
 
+        // set yoko z depth
         this.yoko.setDepth(1);  
 
+        /******************************  create animations from texture atlas ******************************/
         this.anims.create
         ({ 
             key: 'idling', 
@@ -129,7 +127,7 @@ class Play extends Phaser.Scene
 
         this.anims.create
         ({ 
-            key: 'enemyBullet', 
+            key: 'enemyBulletFire', 
             frames: this.anims.generateFrameNames('enemy_atlas', {      
                 prefix: 'enemybullet',
                 start: 1,
@@ -140,54 +138,121 @@ class Play extends Phaser.Scene
             frameRate: 5,
             repeat: -1 
         });
+        /******************************  create animations from texture atlas ******************************/
 
-        // place tile sprite
-        this.starfield = this.add.tileSprite(0, 0, 1800, 720, 'background').setOrigin(0, 0);
+        /******************************  set up enemy groups ******************************/
 
-        // set up barrier group
+        // set up enemyA group
         this.enemyAGroup = this.add.group
         ({
             runChildUpdate: true    // make sure update runs on group children
         });
-        // wait a few seconds before spawning barriers
+        // wait a few seconds before spawning enemies
         this.time.delayedCall(2500, () => 
         { 
             this.addEnemyA(); 
         });
 
+        // set up enemyB group
+        this.enemyBGroup = this.add.group
+        ({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+        // wait a few seconds before spawning enemies
+        this.time.delayedCall(5000, () => 
+        { 
+            this.addEnemyB(); 
+        });
 
-        // set up barrier group
+        // set up bulletY group
+        this.enemyBulletGroup = this.add.group
+        ({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+
+        // wait a few seconds before spawning enemies
+        // this.time.delayedCall(5000, () => 
+        // { 
+        //     this.addEnemyBullet(this.enemyBGroup.x, this.enemyBGroup.y);
+        // });
+
+        /******************************  set up enemy groups ******************************/
+
+        /******************************  set up bullet groups ******************************/
+
+        // set up bulletY group
         this.bulletYGroup = this.add.group
         ({
             runChildUpdate: true    // make sure update runs on group children
         });
 
-        // set up barrier group
+        // set up bulletU group
         this.bulletUGroup = this.add.group
         ({
             runChildUpdate: true    // make sure update runs on group children
         });
 
-        // set up barrier group
+        // set up bulletO group
         this.bulletOGroup = this.add.group
         ({
             runChildUpdate: true    // make sure update runs on group children
         });
 
-        // set up collision event between enemyA and bulletY
+        /******************************  set up bullet groups ******************************/
+
+        // set up collision event between enemyA and yoko
         this.physics.add.overlap(this.enemyAGroup, this.yoko, (enemyA, yoko) =>
         {
             enemyA.destroy();
 
-            yoko.setAlpha(0.5);
+            if(!guardpos)
+            {
+                yoko.setAlpha(0.5);
 
-            this.time.delayedCall(500, () => 
-            { 
-                yoko.setAlpha(1);
-            });
-            yokoHP--;
+                this.time.delayedCall(500, () => 
+                { 
+                    yoko.setAlpha(1);
+                });
+                yokoHP--;
+            }
         });
 
+        // set up collision event between enemyB and yoko
+        this.physics.add.overlap(this.enemyBGroup, this.yoko, (enemyB, yoko) =>
+        {
+            enemyB.destroy();
+
+            if(!guardpos)
+            {
+                yoko.setAlpha(0.5);
+
+                this.time.delayedCall(500, () => 
+                { 
+                    yoko.setAlpha(1);
+                });
+                yokoHP--;
+            }
+        });
+
+        // set up collision event between enemyBullet and yoko
+        this.physics.add.overlap(this.enemyBulletGroup, this.yoko, (enemyBullet, yoko) =>
+        {
+            enemyBullet.destroy();
+
+            if(!guardpos)
+            {
+                yoko.setAlpha(0.5);
+
+                this.time.delayedCall(500, () => 
+                { 
+                    yoko.setAlpha(1);
+                });
+                yokoHP--;
+            }
+
+        });
+
+        /******************************  set up collision event between enemyA and three types of bullets ******************************/
 
         // set up collision event between enemyA and bulletY
         this.physics.add.overlap(this.enemyAGroup, this.bulletYGroup, (enemyA, bulletY) =>
@@ -212,9 +277,67 @@ class Play extends Phaser.Scene
 
             bulletO.destroy();
         });
+        /******************************  set up collision event between enemyA and three types of bullets ******************************/
+
+        /******************************  set up collision event between enemyB and three types of bullets ******************************/
+
+        // set up collision event between enemyA and bulletY
+        this.physics.add.overlap(this.enemyBGroup, this.bulletYGroup, (enemyB, bulletY) =>
+        {
+            enemyB.EnemyBHP -= 2;
+
+            bulletY.destroy();
+        });
+
+        // set up collision event between enemyA and bulletU
+        this.physics.add.overlap(this.enemyBGroup, this.bulletUGroup, (enemyB, bulletU) =>
+        {
+            enemyB.destroy();
+
+            bulletU.destroy();
+        });
+
+        // set up collision event between enemyA and bulletO
+        this.physics.add.overlap(this.enemyBGroup, this.bulletOGroup, (enemyB, bulletO) =>
+        {
+            enemyB.EnemyBHP--;
+
+            bulletO.destroy();
+        });
+        /******************************  set up collision event between enemyB and three types of bullets ******************************/
+
+        /******************************  set up collision event between enemyBullet and three types of bullets ******************************/
+
+        // set up collision event between enemyA and bulletY
+        this.physics.add.overlap(this.enemyBulletGroup, this.bulletYGroup, (enemyBullet, bulletY) =>
+        {
+            enemyBullet.destroy();
+
+            bulletY.destroy();
+        });
+
+        // set up collision event between enemyA and bulletU
+        this.physics.add.overlap(this.enemyBulletGroup, this.bulletUGroup, (enemyBullet, bulletU) =>
+        {
+            enemyBullet.destroy();
+
+            bulletU.destroy();
+        });
+
+        // set up collision event between enemyA and bulletO
+        this.physics.add.overlap(this.enemyBulletGroup, this.bulletOGroup, (enemyBullet, bulletO) =>
+        {
+            enemyBullet.destroy();
+
+            bulletO.destroy();
+        });
+        /******************************  set up collision event between enemyBullet and three types of bullets ******************************/
+
+        // place tile sprite
+        this.background = this.add.tileSprite(0, 0, 1800, 720, 'background').setOrigin(0, 0);
     }
 
-    // create new enemy and add them to existing group
+    /******************************  create new bullets and add them to existing group ******************************/
     addBulletY() 
     {
         let bulletY = new YokoBulletY(this, this.yoko.x, this.yoko.y, 300);
@@ -233,7 +356,10 @@ class Play extends Phaser.Scene
         this.bulletOGroup.add(bulletO);
     }
 
-    // create new enemy and add them to existing group
+    /******************************  create new bullets and add them to existing group ******************************/
+
+
+    /******************************  create new enemy and add them to existing group ******************************/
     addEnemyA() 
     {
         let speedVariance =  Phaser.Math.Between(0, 50);
@@ -242,10 +368,30 @@ class Play extends Phaser.Scene
         enemyA.anims.play('TypeAenemy');
     }
 
+    addEnemyB() 
+    {
+        let speedVariance =  Phaser.Math.Between(0, 50);
+        let enemyB = new EnemyTypeB(this, this.enemyASpeed - speedVariance);
+        this.enemyBGroup.add(enemyB);
+        enemyB.anims.play('TypeBenemy');
+    }
+
+    addEnemyBullet(posx, posy) 
+    {
+        let enemyBullet = new EnemyBullet(this, posx, posy, -500);
+        this.enemyBulletGroup.add(enemyBullet);
+        enemyBullet.anims.play('enemyBulletFire');
+    }
+    /******************************  create new enemy and add them to existing group ******************************/
+
+
+
     update()
     {   
+        // initiate yoko's FSM
         this.yokoFSM.step();
 
+        /******************************  monitor key event for 5 different functional keys ******************************/
         if(Phaser.Input.Keyboard.JustDown(keyY) && YcdEnd) 
         {
             this.addBulletY(); 
@@ -281,9 +427,10 @@ class Play extends Phaser.Scene
                 OcdEnd = true;
             })
         }
+        /******************************  monitor key event for 5 different functional keys ******************************/
 
-
-        this.starfield.tilePositionX += 0.5;  // update tile sprite
+        // update tile sprite
+        this.background.tilePositionX += 0.5;  
 
     }
 

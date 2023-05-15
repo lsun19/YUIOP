@@ -142,8 +142,11 @@ class GuardState extends State
         yoko.setVelocity(0);
         yoko.anims.play('guarding');
 
+        guardpos = true;
+
         // set a short cooldown delay before going back to idle
         scene.time.delayedCall(yoko.shieldCooldown, () => {
+            guardpos = false;
             this.stateMachine.transition('idle');
         });
     }
