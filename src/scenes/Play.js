@@ -174,12 +174,43 @@ class Play extends Phaser.Scene
             runChildUpdate: true    // make sure update runs on group children
         });
 
-
-        this.physics.add.overlap(this.enemyAGroup, this.bulletYGroup, (enemyA, bulletY) =>
+        // set up collision event between enemyA and bulletY
+        this.physics.add.overlap(this.enemyAGroup, this.yoko, (enemyA, yoko) =>
         {
             enemyA.destroy();
 
+            yoko.setAlpha(0.5);
+
+            this.time.delayedCall(500, () => 
+            { 
+                yoko.setAlpha(1);
+            });
+            yokoHP--;
+        });
+
+
+        // set up collision event between enemyA and bulletY
+        this.physics.add.overlap(this.enemyAGroup, this.bulletYGroup, (enemyA, bulletY) =>
+        {
+            enemyA.EnemyAHP -= 2;
+
             bulletY.destroy();
+        });
+
+        // set up collision event between enemyA and bulletU
+        this.physics.add.overlap(this.enemyAGroup, this.bulletUGroup, (enemyA, bulletU) =>
+        {
+            enemyA.destroy();
+
+            bulletU.destroy();
+        });
+
+        // set up collision event between enemyA and bulletO
+        this.physics.add.overlap(this.enemyAGroup, this.bulletOGroup, (enemyA, bulletO) =>
+        {
+            enemyA.EnemyAHP--;
+
+            bulletO.destroy();
         });
     }
 
@@ -251,17 +282,9 @@ class Play extends Phaser.Scene
             })
         }
 
-        // if(this.physics.world.collide(this.bulletYGroup, this.enemyAGroup, null, null, this))
-        // {
-        //     this.bulletYGroup.destroy();
-        // }
 
         this.starfield.tilePositionX += 0.5;  // update tile sprite
 
     }
 
-    // paddleCollision() 
-    // {
-    //     bulletY.destroy();
-    // }
 }

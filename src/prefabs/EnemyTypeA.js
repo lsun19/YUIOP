@@ -14,7 +14,7 @@ class EnemyTypeA extends Phaser.Physics.Arcade.Sprite
         this.setImmovable();   
         this.tint = Math.random() * 0xFFFFFF;               // randomize tint
         this.newEnemyA = true;                              // custom property to control barrier spawning
-        this.EnemyAHP  = 5;
+        this.EnemyAHP  = 3;
 
     }
 
@@ -47,7 +47,7 @@ class EnemyTypeA extends Phaser.Physics.Arcade.Sprite
         }
 
         // destroy paddle if it reaches the left edge of the screen
-        if(this.x < -this.width || this.EnemyAHP < 0) 
+        if(this.x < -this.width || this.EnemyAHP <= 0) 
         {
             this.destroy();
         }

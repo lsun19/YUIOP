@@ -12,7 +12,8 @@
         Loading Bar         : https://rexrainbow.github.io/phaser3-rex-notes/docs/site/loader/
     
     Creative Tilt Justification:
-        The Application of Finite State Machine to manage and organize character behaviors
+        - Five functional keys, corresponding to the game's title YUI op., allowing five distinctive character behaviors
+        - The application of finite state machine to manage the character's behaviors/animations (e.g., idle, move, charge, guard)
 
 
 */
@@ -54,12 +55,13 @@ let hght = game.config.height;
 let YcdEnd = true;
 let UcdEnd = true;
 let OcdEnd = true;
+let yokoHP = 3;
 const textSpacer  = 64;
 const paddingSize = 100;
 const enemyAwdth = 200;
 const enemyAhght = 150;
 const Ycd    = 1000;
-const Ucd    = 2000;
+const Ucd    = 10000;
 const Ocd    = 300;
 
 

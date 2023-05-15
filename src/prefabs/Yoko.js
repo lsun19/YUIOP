@@ -13,10 +13,9 @@ class Yoko extends Phaser.Physics.Arcade.Sprite
 
         this.body.setCollideWorldBounds(true); 
 
-        this.yokoVelocity = 500;    // in pixels
+        this.yokoVelocity   = 500;    // in pixels
         this.shieldCooldown = 300;   
-        this.beamCooldown = 300;         
-        // this.tint = Math.random() * 0xFFFFFF;   // randomize tint
+        this.beamCooldown   = 300;
 
         // this.sfxNoteY1 = scene.sound.add('sfx_C1');
         // this.sfxNoteY1.volume = 0.1;
@@ -62,31 +61,6 @@ class IdleState extends State
 
     execute(scene, yoko) 
     {
-        // use destructuring to make a local copy of the keyboard object
-        // const { left, right, up, down, space, shift } = scene.keys;
-        // const HKey = scene.keys.HKey;
-
-        // attack during different states
-        // if( Phaser.Input.Keyboard.JustDown(keyY)) 
-        // {
-            
-        // }
-        
-        // if( Phaser.Input.Keyboard.JustDown(keyU)) 
-        // {
-            
-        // }
-
-        // if( Phaser.Input.Keyboard.JustDown(keyI)) 
-        // {
-            
-        // }
-
-        // if( Phaser.Input.Keyboard.JustDown(keyO)) 
-        // {
-            
-        // }
-
         // transition to guard if pressing P
         if(Phaser.Input.Keyboard.JustDown(keyP)) 
         {
@@ -114,10 +88,6 @@ class MoveState extends State
 {
     execute(scene, yoko) 
     {
-        // use destructuring to make a local copy of the keyboard object
-        // const { left, right, up, down, space, shift } = scene.keys;
-        // const HKey = scene.keys.HKey;
-
         // transition to guard if pressing P
         if(Phaser.Input.Keyboard.JustDown(keyP)) 
         {
